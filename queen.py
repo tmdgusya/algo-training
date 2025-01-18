@@ -13,35 +13,27 @@ answer = []
 this function helps to draw protected areas on tha board
 """
 def draw(x, y, board):
-    right = y
-    left = y
     drawed = []
-    for i in range(x + 1, len(board)):
-        board[i][y] = 0
-        drawed.append([i,y])
-        if (right + 1) < len(board) and board[i][right + 1] == 1:
-            board[i][right + 1] = 0
-            drawed.append([i,right + 1])
-            right += 1
-        if (left - 1) >= 0 and board[i][left - 1] == 1:
-            board[i][left - 1] = 0
-            drawed.append([i,left - 1])
-            left -= 1
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if i == x or j == y or abs(i - x) == abs(j - y):
+                if board[i][j] == 1:
+                    board[i][j] = 0
+                    drawed.append((i, j))
     return drawed
-
+    
 def undraw(board, drawed):
     for x,y in drawed:
         board[x][y] = 1
 
-
 def chess(acc, board, depth):
     if len(acc) == len(board):
         answer.append(deepcopy(acc))
-        return;
+        return
 
     for i in range(len(board)):
         if board[depth][i] == 0:
-            continue;
+            continue
         # draw
         drawed = draw(depth, i, board)
         acc.append([depth, i])
@@ -50,11 +42,10 @@ def chess(acc, board, depth):
         acc.pop()
         undraw(board, drawed)
 
-    return;
+    return
 
-input = 5
+input = 8
 board = [[1 for _ in range(input)] for _ in range(input)]
 acc = []
 chess(acc, board, 0)
-print(answer)
-print(f'numbers of possible comibnation: {len(answer)}')
+print(f'numbers of possible combinations: {len(answer)}')
